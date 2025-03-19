@@ -65,7 +65,7 @@
 
 ---
 
-# XML Insert
+## XML Insert
 
 示例代码：
 ```java
@@ -123,6 +123,34 @@ public UserDO save(@RequestBody UserDO userDO) {
 本部分对应代码[mybatisXML03](/codes/mybatisXML03/)
 
 ---
+
+## XML update
+
+```java
+<update id="update" parameterType="com.youkeda.comment.dataobject.UserDO">
+    update user set nick_name=#{nickName},gmt_modified=now() where id=#{id}
+</update>
+```
+[mybatisXML04](/codes/mybatisXML04/)
+
+---
+
+## XML delete
+```java
+<delete id="delete">
+    delete from user where id=#{id}
+</delete>
+```
+**注意**：这里的`delete`没有配置 `parameterType` 属性，这因为：<br/>
+```java
+int delete(@Param("id") long id);
+```
+delete方法参数是由`@Param`注解组成，<br/>Mybatis会把这类数据当成`Map`数据来传递，<br/>`parameterType`默认就是`Map`，可以不写<br/>
+
+[mybatisXML05](/codes/mybatisXML05/)
+
+---
+
 ## 一些属性
 - id：DAO类中对应方法名
 - parameterType：接受参数类型
