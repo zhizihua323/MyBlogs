@@ -5,10 +5,12 @@
 ![mybatis01.png](/blogs/image/mybatis01.png)
 <br/>
 同时还要在.properties文件中完成mybatis.mapper-locations配置
-![mybatis02.png](/blogs/image/mybatis02.png)
-<br/>
-详见 [mybatis01](/codes/mybatis01/)
+![mybatis02.png](/blogs/image/mybatis02.png) <br/>
+
+**对应代码**  [mybatis01](/codes/mybatisXML01/)
+
 ---
+
 ## XML Mapper
 
 1. xml文件的头信息：
@@ -44,18 +46,22 @@
 </mapper>
 ```
 `id` & `type`
-> <resultMap id="userResultMap" type="com.youkeda.comment.dataobject。UserDO">
+```java
+<resultMap id="userResultMap" type="com.youkeda.comment.dataobject。UserDO">
+```
 - id 对应DO对象，命名规则`xxxResultMap` 
 - type 对应DO类路径
 
 `id` & `result`
-> <id column="id" property="id"/>
-> <result column="user_name" property="userName"/>
+```java
+<id column="id" property="id"/>
+<result column="user_name" property="userName"/>
+```
 - id设置数据库主键 column对应表，property对应DO属性名称
 - result 设置数据库其他字段名称
 
-有了resultMap 就不用使用别名 user_name as userName 了
-对应代码 [mybatis02](/codes/mybatis02/)
+有了resultMap 就不用使用别名 user_name as userName 了<br/>
+**对应代码** [mybatisXML02](/codes/mybatisXML02/)
 
 ---
 
