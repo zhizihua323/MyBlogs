@@ -1,0 +1,132 @@
+# 复盘Mybatis XML
+## 配置xml文件
+注意：配置mybatis xml文件时，需要放在resources文件夹中，<br/>
+并且要将dao文件路径保持一致<br/>
+![mybatis01.png](/blogs/image/mybatis01.png)
+<br/>
+同时还要在.properties文件中完成mybatis.mapper-locations配置
+![mybatis02.png](/blogs/image/mybatis02.png) <br/>
+
+**对应代码**  [mybatis01](/codes/mybatisXML01/)
+
+---
+
+## XML Mapper
+
+1. xml文件的头信息：
+```java
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+```
+
+2. 有了头信息，我们还要准备mapper
+```java
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youkeda.comment.dao.UserDAO">
+
+
+</mapper>
+```
+
+3. resultMap用来处理表和DO对象的属性映射关系，确保每个字段都有属性可以匹配
+```java
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youkeda.comment.dao.UserDAO">
+
+  <resultMap id="userResultMap" type="com.youkeda.comment.dataobject.UserDO">
+    <id column="id" property="id"/>
+    <result column="user_name" property="userName"/>
+  </resultMap>
+
+</mapper>
+```
+`id` & `type`
+```java
+<resultMap id="userResultMap" type="com.youkeda.comment.dataobject。UserDO">
+```
+- id 对应DO对象，命名规则`xxxResultMap` 
+- type 对应DO类路径
+
+`id` & `result`
+```java
+<id column="id" property="id"/>
+<result column="user_name" property="userName"/>
+```
+- id设置数据库主键 column对应表，property对应DO属性名称
+- result 设置数据库其他字段名称
+
+有了resultMap 就不用使用别名 user_name as userName 了<br/>
+**对应代码** [mybatisXML02](/codes/mybatisXML02/)
+
+---
+
+# XML Insert
+
+示例代码：
+```java
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youkeda.comment.dao.UserDAO">
+ <resultMap id="userResultMap" type="com.youkeda.comment.dataobject.UserDO">
+    <id column="id" property="id"/>
+    <result column="user_name" property="userName"/>
+    <result column="pwd" property="pwd"/>
+    <result column="nick_name" property="nickName"/>
+    <result column="avatar" property="avatar"/>
+    <result column="gmt_created" property="gmtCreated"/>
+    <result column="gmt_modified" property="gmtModified"/>
+  </resultMap>
+
+  <insert id="add" parameterType="com.youkeda.comment.dataobject.UserDO" >
+    INSERT INTO user (user_name, pwd, nick_name,avatar,gmt_created,gmt_modified)
+    VALUES(#{userName}, #{pwd}, #{nickName}, #{avatar},now(),now())
+  </insert>
+
+</mapper>
+```
+mapper节点下添加了 Insert 以下两个属性：<br/>
+
+`id` && `parameterType`
+- id：DAO类中对应的方法名
+- parameterType：传递参数类型
+<br/>
+
+**常用于insert、select、insert、update等标签中**
+
+---
+
+用于插入的是一组数据（对象）采用`@RequestBody`
+```java
+@PostMapping("/user")
+@ResponseBody
+public UserDO save(@RequestBody UserDO userDO) {
+    userDAO.add(userDO);
+    return userDO;
+}
+```
+
+> 如果想要获得插入的主键id值，需要配置`useGeneratedKeys`、`keyProperty`
+
+```java
+<insert id="add" parameterType="com.youkeda.comment.dataobject.UserDO" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO user (user_name, pwd, nick_name,avatar,gmt_created,gmt_modified)
+    VALUES(#{userName}, #{pwd}, #{nickName}, #{avatar},now(),now())
+</insert>
+```
+
+本部分对应代码[mybatisXML03](/codes/mybatisXML03/)
+
+---
+## 一些属性
+- id：DAO类中对应方法名
+- parameterType：接受参数类型
+- resultType：返回类型
+<br/>
+
+详细内容链接[XML映射器](https://mybatis.net.cn/sqlmap-xml.html)
