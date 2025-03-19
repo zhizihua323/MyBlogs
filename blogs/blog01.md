@@ -51,7 +51,7 @@ public static void main(String[] args) {
 这是一个链接 [link](https://markdown.com.cn/basic-syntax/links.html)
 
 ### 插入照片
-![image.png](/logs/image/image.png)
+![image.png](/blogs/image/01.png)
 
 
 以上参考自 [Markdown 官方教程](https://markdown.com.cn/basic-syntax/)
