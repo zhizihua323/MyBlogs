@@ -151,6 +151,51 @@ delete方法参数是由`@Param`注解组成，<br/>Mybatis会把这类数据当
 
 ---
 
+## XML Select
+```java
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youkeda.comment.dao.UserDAO">
+    <resultMap id="userResultMap" type="com.youkeda.comment.dataobject.UserDO">
+        <id column="id" property="id"/>
+        <result column="user_name" property="userName"/>
+        <result column="pwd" property="pwd"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="avatar" property="avatar"/>
+        <result column="gmt_created" property="gmtCreated"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
+
+    <select id="findByUserName" resultMap="userResultMap">
+        select * from user where user_name=#{userName} limit 1
+    </select>
+
+</mapper>
+```
+**注意**：我们这里使用了一个属性`resultMap`，这个值我们一般配置为XML文件下的`resultMap`节点的`id`值<br/>
+这样的好处是，我们不用做额外的数据映射了<br/>
+
+这部分的代码：
+[mybatis06](/codes/mybatisXML06/)
+[mybatis07](/codes/mybatisXML07/)
+
+---
+
+这里要注意SQL拼接问题：<br/>
+
+![mybatis03.jpg](/blogs/image/mybatis03.jpg)
+
+## 简单总结XML CRUD
+基于前几次开发，总结一下基于XML模式的开发顺序：<br/>
+1. 创建 DO 对象
+2. 创建 DAO 接口，配置`@Mapper`注解
+3. 创建 XML 文件，并完成`resultMap`配置
+4. 创建 DAO 接口方法
+5. 创建对应的 XML 语句
+
+完整代码：[mybatis07](/codes/mybatisXML07/)
+
 ## 一些属性
 - id：DAO类中对应方法名
 - parameterType：接受参数类型
