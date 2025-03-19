@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youkeda.comment.dao.CommentDAO">
+
+    <resultMap id="commentResultMap" type="com.youkeda.comment.dao">
+        <id column="id" property="id"/>
+        <result column="content" property="content"/>
+        <result column="ref_id" property="refId"/>
+        <!-- 其他字段映射 -->
+    </resultMap>
+
+    <select id="findByRefId" resultMap="commentResultMap">
+        SELECT * FROM comment WHERE ref_id = #{refId}
+    </select>
+
+</mapper>
