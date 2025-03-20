@@ -1,0 +1,28 @@
+# 项目介绍
+这是一个评论服务开发小项目<br>
+接下来通过实战一步步完成评论开发，业务流程为：<br>
+- 用户注册服务
+- 用户登录服务
+- 用户发表评论
+- 用户回复评论
+- 查询文章评论
+
+针对开发，我们提供了两个模型：
+![Review Service01.png](/blogs/image/Review%20Service01.png)
+
+首先要完成这两个模型的创建，领域模型一般放在model包下<br>
+**注意**：User对象有一个属性 pwd,为了防止密码泄露需要做些配置
+```java
+@JsonSerialize(using = NullSerializer.class)
+private String pwd;
+@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+private LocalDateTime gmtModified;
+```
+
+上面配置了两个注解：`@JsonSerialize` `@JsonFormat`<br>
+- @JsonSerialize(using = NullSerializer.class) 这个注解在API返回JSON结果时，字段值会被重置为null，从而达到安全作用（并非修改数据库中数据）
+- 第二个注解呢，则对时间进行格式化输出
+
+注意model创建位置，及其作用
+
+[代码部分](/codes/review_service/)
